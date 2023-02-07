@@ -30,16 +30,22 @@ def is_all_friend():
 
 day = 0
 cnts = []
-while is_all_friend():
+while not is_all_friend():
     day += 1
     cnt = 0
+    submits = []
     for a in range(1, N+1):
         for friend in graph[a]:
             for friend_of_friend in graph[friend]:
-                if friend_of_friend not in graph[a]:
-                    graph[a].append(friend_of_friend)
-                    graph[friend_of_friend].append(a)
+                if friend_of_friend == a:
+                    continue
+                if friend_of_friend not in graph[a] and (min(a, friend_of_friend), max(a, friend_of_friend)) not in submits:
+                    submits.append((min(a, friend_of_friend),
+                                   max(a, friend_of_friend)))
                     cnt += 1
+    for a, b in submits:
+        graph[a].append(b)
+        graph[b].append(a)
     cnts.append(cnt)
 
 print(day)
